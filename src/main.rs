@@ -12,7 +12,7 @@ fn main() {
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "Rust Fish".into(),
-                resolution: (1200.0, 800.0).into(),
+                resolution: (1200, 800).into(),
                 ..default()
             }),
             ..default()
@@ -24,7 +24,7 @@ fn main() {
 }
 
 fn setup(mut commands: Commands) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn((Camera2d, Msaa::Sample4));
 
     let fish_origin = Vec2::ZERO;
     let fish = Fish::new(fish_origin);
@@ -33,61 +33,52 @@ fn setup(mut commands: Commands) {
 
     commands.spawn((
         fish,
-        SpatialBundle::default(),
+        Transform::default(),
+        Visibility::default(),
     ))
         .with_children(|parent| {
             parent.spawn((
-                ShapeBundle {
-                    path: GeometryBuilder::build_as(&shapes::Circle::default()),
-                    spatial: SpatialBundle::from_transform(Transform::from_xyz(0.0, 0.0, -10.0)),
-                    ..default()
-                },
-                Fill::color(fin_color),
-                Stroke::new(Color::WHITE, 4.0),
+                ShapeBuilder::with(&shapes::Circle::default())
+                    .fill(fin_color)
+                    .stroke((Color::WHITE, 4.0))
+                    .build(),
+                Transform::from_xyz(0.0, 0.0, -10.0),
                 FishVentralFinPart,
             ));
 
             parent.spawn((
-                ShapeBundle {
-                    path: GeometryBuilder::build_as(&shapes::Circle::default()),
-                    spatial: SpatialBundle::from_transform(Transform::from_xyz(0.0, 0.0, -5.0)),
-                    ..default()
-                },
-                Fill::color(fin_color),
-                Stroke::new(Color::WHITE, 4.0),
+                ShapeBuilder::with(&shapes::Circle::default())
+                    .fill(fin_color)
+                    .stroke((Color::WHITE, 4.0))
+                    .build(),
+                Transform::from_xyz(0.0, 0.0, -5.0),
                 FishPectoralFinPart,
             ));
 
             parent.spawn((
-                ShapeBundle {
-                    path: GeometryBuilder::build_as(&shapes::Circle::default()),
-                    spatial: SpatialBundle::from_transform(Transform::from_xyz(0.0, 0.0, -1.0)),
-                    ..default()
-                },
-                Fill::color(fin_color),
-                Stroke::new(Color::WHITE, 4.0),
+                ShapeBuilder::with(&shapes::Circle::default())
+                    .fill(fin_color)
+                    .stroke((Color::WHITE, 4.0))
+                    .build(),
+                Transform::from_xyz(0.0, 0.0, -1.0),
                 FishTailFinPart,
             ));
 
             parent.spawn((
-                ShapeBundle {
-                    path: GeometryBuilder::build_as(&shapes::Circle::default()),
-                    spatial: SpatialBundle::from_transform(Transform::from_xyz(0.0, 0.0, 0.1)),
-                    ..default()
-                },
-                Fill::color(body_color),
-                Stroke::new(Color::WHITE, 4.0),
+                ShapeBuilder::with(&shapes::Circle::default())
+                    .fill(body_color)
+                    .stroke((Color::WHITE, 4.0))
+                    .build(),
+                Transform::from_xyz(0.0, 0.0, 0.1),
                 FishBodyPart,
             ));
 
             parent.spawn((
-                ShapeBundle {
-                    path: GeometryBuilder::build_as(&shapes::Circle::default()),
-                    spatial: SpatialBundle::from_transform(Transform::from_xyz(0.0, 0.0, 1.0)),
-                    ..default()
-                },
-                Fill::color(fin_color),
-                Stroke::new(Color::WHITE, 4.0),
+                ShapeBuilder::with(&shapes::Circle::default())
+                    .fill(fin_color)
+                    .stroke((Color::WHITE, 4.0))
+                    .build(),
+                Transform::from_xyz(0.0, 0.0, 1.0),
                 FishFrontFinPart,
             ));
         });
